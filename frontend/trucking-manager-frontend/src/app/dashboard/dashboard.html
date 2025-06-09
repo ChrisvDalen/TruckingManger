@@ -1,0 +1,17 @@
+<h2>Dashboard</h2>
+<div *ngIf="status">
+  <p>Cash: {{ status.cash | currency:'EUR' }}</p>
+  <h3>Trucks</h3>
+  <ul>
+    <li *ngFor="let t of status.trucks">{{t.name}} (condition: {{t.condition | number:'1.0-2'}})</li>
+  </ul>
+  <h3>Drivers</h3>
+  <ul>
+    <li *ngFor="let d of status.drivers">{{d.name}} - €{{d.dailySalary}}/day</li>
+  </ul>
+  <h3>Active Jobs</h3>
+  <ul>
+    <li *ngFor="let j of status.activeJobs">Job {{j.id}} - remaining: {{j.remainingDays}} days</li>
+  </ul>
+</div>
+<button (click)="load()">Refresh</button>

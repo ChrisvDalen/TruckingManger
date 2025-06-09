@@ -1,0 +1,8 @@
+<h2>Drivers</h2>
+<ul>
+  <li *ngFor="let d of status?.drivers">{{d.name}} - €{{d.dailySalary}}/day</li>
+</ul>
+<h3>Hire Driver</h3>
+<label>Name <input [(ngModel)]="newDriver.name"></label>
+<label>Daily Salary <input type="number" [(ngModel)]="newDriver.salary"></label>
+<button (click)="hire()">Hire</button>
