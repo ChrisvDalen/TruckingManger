@@ -1,0 +1,16 @@
+<h2>Available Jobs</h2>
+<table>
+  <tr><th>ID</th><th>Distance</th><th>Reward</th><th>Truck</th><th></th></tr>
+  <tr *ngFor="let j of jobs">
+    <td>{{j.id}}</td>
+    <td>{{j.distance}} km</td>
+    <td>{{j.reward | currency:'EUR'}}</td>
+    <td>
+      <select #t>
+        <option *ngFor="let truck of status.trucks" [value]="truck.id">{{truck.name}}</option>
+      </select>
+    </td>
+    <td><button (click)="accept(j.id, +t.value)">Accept</button></td>
+  </tr>
+</table>
+<button (click)="load()">Refresh</button>
