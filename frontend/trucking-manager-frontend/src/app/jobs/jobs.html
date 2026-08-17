@@ -10,7 +10,7 @@
         <option *ngFor="let truck of status.trucks" [value]="truck.id">{{truck.name}}</option>
       </select>
     </td>
-    <td><button (click)="accept(j.id, t.value)">Accept</button></td>
+    <td><button (click)="accept(j.id, +t.value)">Accept</button></td>
   </tr>
 </table>
 <button (click)="load()">Refresh</button>
