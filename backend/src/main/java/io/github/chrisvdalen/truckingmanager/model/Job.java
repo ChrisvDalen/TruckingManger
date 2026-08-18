@@ -1,12 +1,12 @@
-package com.example.truckingmanager.model;
+package io.github.chrisvdalen.truckingmanager.model;
 
 public class Job {
-    private static long nextId = 1;
-    private long id;
-    private double distance;
-    private double weight;
-    private int durationDays;
-    private double reward;
+    private static final java.util.concurrent.atomic.AtomicLong NEXT_ID = new java.util.concurrent.atomic.AtomicLong(1);
+    private final long id;
+    private final double distance;
+    private final double weight;
+    private final int durationDays;
+    private final double reward;
 
     private long assignedTruckId = -1;
     private int remainingDays;
@@ -14,7 +14,7 @@ public class Job {
     private double maintenanceCost;
 
     public Job(double distance, double weight, int durationDays, double reward) {
-        this.id = nextId++;
+        this.id = NEXT_ID.getAndIncrement();
         this.distance = distance;
         this.weight = weight;
         this.durationDays = durationDays;

@@ -1,17 +1,23 @@
 <h2>Dashboard</h2>
-<div *ngIf="status">
-  <p>Cash: {{ status.cash | currency:'EUR' }}</p>
+@if (status(); as company) {
+  <p>Cash: {{ company.cash | currency:'EUR' }}</p>
   <h3>Trucks</h3>
   <ul>
-    <li *ngFor="let t of status.trucks">{{t.name}} (condition: {{t.condition | number:'1.0-2'}})</li>
+    @for (truck of company.trucks; track truck.id) {
+      <li>{{ truck.name }} (condition: {{ truck.condition | number:'1.0-2' }})</li>
+    }
   </ul>
   <h3>Drivers</h3>
   <ul>
-    <li *ngFor="let d of status.drivers">{{d.name}} - €{{d.dailySalary}}/day</li>
+    @for (driver of company.drivers; track driver.id) {
+      <li>{{ driver.name }} - €{{ driver.dailySalary }}/day</li>
+    }
   </ul>
   <h3>Active Jobs</h3>
   <ul>
-    <li *ngFor="let j of status.activeJobs">Job {{j.id}} - remaining: {{j.remainingDays}} days</li>
+    @for (job of company.activeJobs; track job.id) {
+      <li>Job {{ job.id }} - remaining: {{ job.remainingDays }} days</li>
+    }
   </ul>
-</div>
+}
 <button (click)="load()">Refresh</button>

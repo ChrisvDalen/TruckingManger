@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Api } from '../api';
 
@@ -10,8 +10,9 @@ import { Api } from '../api';
   styleUrl: './advance-day.css'
 })
 export class AdvanceDay {
-  constructor(private api: Api) {}
-  advance() {
+  private readonly api = inject(Api);
+
+  advance(): void {
     this.api.advanceDay().subscribe();
   }
 }

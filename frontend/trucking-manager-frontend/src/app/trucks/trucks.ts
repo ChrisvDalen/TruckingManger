@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Api } from '../api';
+import { Api, CompanyStatus } from '../api';
 
 @Component({
   selector: 'app-trucks',
@@ -11,16 +11,17 @@ import { Api } from '../api';
   styleUrl: './trucks.css'
 })
 export class Trucks implements OnInit {
-  status: any;
-  newTruck = {name: 'New Truck', consumption: 30, price: 10000};
-  constructor(private api: Api) {}
-  ngOnInit() {
+  readonly status = signal<CompanyStatus | null>(null);
+  readonly newTruck = {name: 'New Truck', consumption: 30, price: 10000};
+  private readonly api = inject(Api);
+
+  ngOnInit(): void {
     this.load();
   }
-  load() {
-    this.api.getStatus().subscribe(s => this.status = s);
+  load(): void {
+    this.api.getStatus().subscribe(status => this.status.set(status));
   }
-  buy() {
+  buy(): void {
     this.api.buyTruck(this.newTruck.name, this.newTruck.consumption, this.newTruck.price)
       .subscribe(() => this.load());
   }

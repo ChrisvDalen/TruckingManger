@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Api } from '../api';
+import { Api, CompanyStatus } from '../api';
 
 @Component({
   selector: 'app-drivers',
@@ -11,16 +11,17 @@ import { Api } from '../api';
   styleUrl: './drivers.css'
 })
 export class Drivers implements OnInit {
-  status: any;
-  newDriver = {name: 'Driver', salary: 200};
-  constructor(private api: Api) {}
-  ngOnInit() {
+  readonly status = signal<CompanyStatus | null>(null);
+  readonly newDriver = {name: 'Driver', salary: 200};
+  private readonly api = inject(Api);
+
+  ngOnInit(): void {
     this.load();
   }
-  load() {
-    this.api.getStatus().subscribe(s => this.status = s);
+  load(): void {
+    this.api.getStatus().subscribe(status => this.status.set(status));
   }
-  hire() {
+  hire(): void {
     this.api.hireDriver(this.newDriver.name, this.newDriver.salary).subscribe(() => this.load());
   }
 }

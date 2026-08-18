@@ -1,33 +1,62 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class Api {
-  private base = 'http://localhost:8080/api';
-  constructor(private http: HttpClient) {}
+  private readonly base = 'http://localhost:8080/api';
+  private readonly http = inject(HttpClient);
 
-  getStatus(): Observable<any> {
-    return this.http.get(this.base + '/game/status');
+  getStatus(): Observable<CompanyStatus> {
+    return this.http.get<CompanyStatus>(this.base + '/game/status');
   }
 
-  advanceDay(): Observable<any> {
-    return this.http.post(this.base + '/game/advance', {});
+  advanceDay(): Observable<CompanyStatus> {
+    return this.http.post<CompanyStatus>(this.base + '/game/advance', {});
   }
 
-  availableJobs(): Observable<any> {
-    return this.http.get(this.base + '/jobs/available');
+  availableJobs(): Observable<Job[]> {
+    return this.http.get<Job[]>(this.base + '/jobs/available');
   }
 
-  acceptJob(jobId: number, truckId: number): Observable<any> {
-    return this.http.post(this.base + '/jobs/accept', { jobId, truckId });
+  acceptJob(jobId: number, truckId: number): Observable<{ accepted: boolean }> {
+    return this.http.post<{ accepted: boolean }>(this.base + '/jobs/accept', { jobId, truckId });
   }
 
-  buyTruck(name: string, consumption: number, price: number): Observable<any> {
-    return this.http.post(this.base + '/trucks/buy', { name, consumption, price });
+  buyTruck(name: string, consumption: number, price: number): Observable<CompanyStatus> {
+    return this.http.post<CompanyStatus>(this.base + '/trucks/buy', { name, consumption, price });
   }
 
-  hireDriver(name: string, salary: number): Observable<any> {
-    return this.http.post(this.base + '/drivers/hire', { name, salary });
+  hireDriver(name: string, salary: number): Observable<CompanyStatus> {
+    return this.http.post<CompanyStatus>(this.base + '/drivers/hire', { name, salary });
   }
+}
+
+export interface Truck {
+  id: number;
+  name: string;
+  fuelConsumption: number;
+  condition: number;
+}
+
+export interface Driver {
+  id: number;
+  name: string;
+  dailySalary: number;
+}
+
+export interface Job {
+  id: number;
+  distance: number;
+  weight: number;
+  durationDays: number;
+  reward: number;
+  remainingDays: number;
+}
+
+export interface CompanyStatus {
+  cash: number;
+  trucks: Truck[];
+  drivers: Driver[];
+  activeJobs: Job[];
 }

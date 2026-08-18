@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Api } from '../api';
+import { Api, CompanyStatus } from '../api';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,12 +10,14 @@ import { Api } from '../api';
   styleUrl: './dashboard.css'
 })
 export class Dashboard implements OnInit {
-  status: any;
-  constructor(private api: Api) {}
-  ngOnInit() {
+  readonly status = signal<CompanyStatus | null>(null);
+  private readonly api = inject(Api);
+
+  ngOnInit(): void {
     this.load();
   }
-  load() {
-    this.api.getStatus().subscribe(data => this.status = data);
+
+  load(): void {
+    this.api.getStatus().subscribe(data => this.status.set(data));
   }
 }

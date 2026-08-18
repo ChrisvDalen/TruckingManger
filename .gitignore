@@ -1,0 +1,4 @@
+/backend/target/
+/frontend/trucking-manager-frontend/node_modules/
+/frontend/trucking-manager-frontend/dist/
+.DS_Store

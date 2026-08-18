@@ -1,11 +1,11 @@
-package com.example.truckingmanager.controller;
+package io.github.chrisvdalen.truckingmanager.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.truckingmanager.service.GameService;
+import io.github.chrisvdalen.truckingmanager.service.GameService;
 
 @RestController
 @RequestMapping("/api/game")
