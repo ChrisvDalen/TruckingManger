@@ -1,4 +1,4 @@
-package com.example.truckingmanager;
+package io.github.chrisvdalen.truckingmanager;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Api } from '../api';
+import { Api, CompanyStatus, Job } from '../api';
 
 @Component({
   selector: 'app-jobs',
@@ -10,17 +10,18 @@ import { Api } from '../api';
   styleUrl: './jobs.css'
 })
 export class Jobs implements OnInit {
-  jobs: any[] = [];
-  status: any;
-  constructor(private api: Api) {}
-  ngOnInit() {
+  readonly jobs = signal<Job[]>([]);
+  readonly status = signal<CompanyStatus | null>(null);
+  private readonly api = inject(Api);
+
+  ngOnInit(): void {
     this.load();
   }
-  load() {
-    this.api.availableJobs().subscribe(j => this.jobs = j as any[]);
-    this.api.getStatus().subscribe(s => this.status = s);
+  load(): void {
+    this.api.availableJobs().subscribe(jobs => this.jobs.set(jobs));
+    this.api.getStatus().subscribe(status => this.status.set(status));
   }
-  accept(jobId: number, truckId: number) {
+  accept(jobId: number, truckId: number): void {
     this.api.acceptJob(jobId, truckId).subscribe(() => this.load());
   }
 }

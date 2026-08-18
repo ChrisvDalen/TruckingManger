@@ -1,4 +1,4 @@
-package com.example.truckingmanager.model;
+package io.github.chrisvdalen.truckingmanager.model;
 
 import java.util.ArrayList;
 import java.util.List;

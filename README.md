@@ -1,28 +1,24 @@
-# Trucking Manager Game
+# Trucking Manager
 
-This repository contains a minimal trucking business management game.
+Small trucking business game with a Java 25/Spring Boot 4.1 backend and Angular 22 frontend.
 
 ## Backend
 
-The backend is a Spring Boot application (Java 21) located in `backend/`.
-Run it with Maven:
-
 ```bash
 cd backend
-mvn spring-boot:run
+./mvnw verify
+./mvnw spring-boot:run
 ```
-
-REST endpoints provide the game state and actions.
 
 ## Frontend
 
-The frontend is an Angular application in `frontend/trucking-manager-frontend/`.
-Install dependencies and start the development server:
-
 ```bash
 cd frontend/trucking-manager-frontend
-npm install
-ng serve
+npm ci
+npm test
+npm run build
+npm start
 ```
 
-The app will be available on `http://localhost:4200`.
+Node.js 22.12 or 24 and npm 11 are supported. The frontend runs on
+`http://localhost:4200` and calls the backend on `http://localhost:8080`.

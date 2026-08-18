@@ -1,4 +1,4 @@
-package com.example.truckingmanager.controller;
+package io.github.chrisvdalen.truckingmanager.controller;
 
 import java.util.Map;
 
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.truckingmanager.service.GameService;
+import io.github.chrisvdalen.truckingmanager.service.GameService;
 
 @RestController
 @RequestMapping("/api/jobs")

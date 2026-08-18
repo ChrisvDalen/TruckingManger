@@ -1,33 +1,33 @@
-package com.example.truckingmanager.service;
+package io.github.chrisvdalen.truckingmanager.service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import org.springframework.stereotype.Service;
 
-import com.example.truckingmanager.model.Company;
-import com.example.truckingmanager.model.Driver;
-import com.example.truckingmanager.model.Job;
-import com.example.truckingmanager.model.Truck;
+import io.github.chrisvdalen.truckingmanager.model.Company;
+import io.github.chrisvdalen.truckingmanager.model.Driver;
+import io.github.chrisvdalen.truckingmanager.model.Job;
+import io.github.chrisvdalen.truckingmanager.model.Truck;
 
 @Service
 public class GameService {
-    private Company company = new Company();
-    private List<Job> availableJobs = new ArrayList<>();
-    private Random random = new Random();
-    private double fuelPrice = 1.5; // per liter
+    private final Company company = new Company();
+    private final List<Job> availableJobs = new ArrayList<>();
+    private final RandomGenerator random = RandomGenerator.getDefault();
+    private static final double FUEL_PRICE = 1.5;
 
-    public Company getCompany() {
+    public synchronized Company getCompany() {
         return company;
     }
 
-    public List<Job> getAvailableJobs() {
+    public synchronized List<Job> getAvailableJobs() {
         if (availableJobs.isEmpty()) {
             generateJobs();
         }
-        return availableJobs;
+        return List.copyOf(availableJobs);
     }
 
     private void generateJobs() {
@@ -41,7 +41,7 @@ public class GameService {
         }
     }
 
-    public boolean acceptJob(long jobId, long truckId) {
+    public synchronized boolean acceptJob(long jobId, long truckId) {
         Truck truck = company.getTrucks().stream()
                 .filter(t -> t.getId() == truckId)
                 .findFirst()
@@ -53,7 +53,7 @@ public class GameService {
         if (truck == null || job == null) {
             return false;
         }
-        double fuelCost = job.getDistance() * truck.getFuelConsumption() / 100.0 * fuelPrice;
+        double fuelCost = job.getDistance() * truck.getFuelConsumption() / 100.0 * FUEL_PRICE;
         double maintenanceCost = job.getDistance() * 0.05;
         job.assignTruck(truck.getId(), fuelCost, maintenanceCost);
         company.getActiveJobs().add(job);
@@ -61,17 +61,23 @@ public class GameService {
         return true;
     }
 
-    public void buyTruck(String name, double fuelConsumption, double price) {
+    public synchronized void buyTruck(String name, double fuelConsumption, double price) {
+        if (name == null || name.isBlank() || fuelConsumption <= 0 || price <= 0 || price > company.getCash()) {
+            throw new GameRuleException("Truck details are invalid or the company has insufficient cash");
+        }
         company.subtractCash(price);
         company.getTrucks().add(new Truck(name, fuelConsumption));
     }
 
-    public void hireDriver(String name, double dailySalary) {
+    public synchronized void hireDriver(String name, double dailySalary) {
+        if (name == null || name.isBlank() || dailySalary <= 0 || dailySalary > company.getCash()) {
+            throw new GameRuleException("Driver details are invalid or the company has insufficient cash");
+        }
         company.subtractCash(dailySalary); // hiring fee
         company.getDrivers().add(new Driver(name, dailySalary));
     }
 
-    public void advanceDay() {
+    public synchronized void advanceDay() {
         Iterator<Job> it = company.getActiveJobs().iterator();
         while (it.hasNext()) {
             Job job = it.next();
