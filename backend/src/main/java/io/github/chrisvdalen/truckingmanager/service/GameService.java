@@ -30,6 +30,13 @@ public class GameService {
         return List.copyOf(availableJobs);
     }
 
+    /** Restores the game to its initial state; used to isolate tests. */
+    public synchronized void reset() {
+        company.reset();
+        availableJobs.clear();
+        generateJobs();
+    }
+
     private void generateJobs() {
         availableJobs.clear();
         for (int i = 0; i < 5; i++) {

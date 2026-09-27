@@ -1,6 +1,9 @@
 package io.github.chrisvdalen.truckingmanager.controller;
 
+import java.util.List;
 import java.util.Map;
+
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.chrisvdalen.truckingmanager.dto.AcceptJobRequest;
+import io.github.chrisvdalen.truckingmanager.model.Job;
 import io.github.chrisvdalen.truckingmanager.service.GameService;
 
 @RestController
@@ -20,15 +25,13 @@ public class JobsController {
     }
 
     @GetMapping("/available")
-    public Object available() {
+    public List<Job> available() {
         return service.getAvailableJobs();
     }
 
     @PostMapping("/accept")
-    public Object accept(@RequestBody Map<String, Long> body) {
-        long jobId = body.getOrDefault("jobId", -1L);
-        long truckId = body.getOrDefault("truckId", -1L);
-        boolean ok = service.acceptJob(jobId, truckId);
+    public Map<String, Boolean> accept(@Valid @RequestBody AcceptJobRequest request) {
+        boolean ok = service.acceptJob(request.jobId(), request.truckId());
         return Map.of("accepted", ok);
     }
 }

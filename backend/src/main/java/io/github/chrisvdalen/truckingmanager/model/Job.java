@@ -34,6 +34,8 @@ public class Job {
         this.maintenanceCost = maintenanceCost;
     }
 
+    public long getAssignedTruckId() { return assignedTruckId; }
+
     public boolean isAssigned() { return assignedTruckId != -1; }
     public int getRemainingDays() { return remainingDays; }
     public void progress() { if (remainingDays > 0) remainingDays--; }
