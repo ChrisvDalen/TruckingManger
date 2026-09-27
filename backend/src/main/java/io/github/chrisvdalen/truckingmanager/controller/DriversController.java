@@ -1,12 +1,14 @@
 package io.github.chrisvdalen.truckingmanager.controller;
 
-import java.util.Map;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.chrisvdalen.truckingmanager.dto.HireDriverRequest;
+import io.github.chrisvdalen.truckingmanager.model.Company;
 import io.github.chrisvdalen.truckingmanager.service.GameService;
 
 @RestController
@@ -19,10 +21,8 @@ public class DriversController {
     }
 
     @PostMapping("/hire")
-    public Object hire(@RequestBody Map<String, Object> body) {
-        String name = (String) body.getOrDefault("name", "Driver");
-        double salary = ((Number) body.getOrDefault("salary", 200)).doubleValue();
-        service.hireDriver(name, salary);
+    public Company hire(@Valid @RequestBody HireDriverRequest request) {
+        service.hireDriver(request.name(), request.salary());
         return service.getCompany();
     }
 }

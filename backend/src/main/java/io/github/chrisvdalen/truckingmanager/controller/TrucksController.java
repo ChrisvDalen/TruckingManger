@@ -1,12 +1,14 @@
 package io.github.chrisvdalen.truckingmanager.controller;
 
-import java.util.Map;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.chrisvdalen.truckingmanager.dto.BuyTruckRequest;
+import io.github.chrisvdalen.truckingmanager.model.Company;
 import io.github.chrisvdalen.truckingmanager.service.GameService;
 
 @RestController
@@ -19,11 +21,8 @@ public class TrucksController {
     }
 
     @PostMapping("/buy")
-    public Object buy(@RequestBody Map<String, Object> body) {
-        String name = (String) body.getOrDefault("name", "Truck");
-        double consumption = ((Number) body.getOrDefault("consumption", 30)).doubleValue();
-        double price = ((Number) body.getOrDefault("price", 10000)).doubleValue();
-        service.buyTruck(name, consumption, price);
+    public Company buy(@Valid @RequestBody BuyTruckRequest request) {
+        service.buyTruck(request.name(), request.consumption(), request.price());
         return service.getCompany();
     }
 }

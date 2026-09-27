@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.chrisvdalen.truckingmanager.model.Company;
 import io.github.chrisvdalen.truckingmanager.service.GameService;
 
 @RestController
@@ -17,12 +18,12 @@ public class GameController {
     }
 
     @GetMapping("/status")
-    public Object status() {
+    public Company status() {
         return service.getCompany();
     }
 
     @PostMapping("/advance")
-    public Object advance() {
+    public Company advance() {
         service.advanceDay();
         return service.getCompany();
     }

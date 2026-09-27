@@ -22,14 +22,21 @@
     "@angular/platform-browser": "22.1.2",
     "@angular/router": "22.1.2",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
-    "vitest": "4.1.10"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular/build": "22.1.4",
     "@angular/cli": "22.1.4",
     "@angular/compiler-cli": "22.1.2",
     "jsdom": "27.4.0",
-    "typescript": "6.0.2"
+    "typescript": "6.0.2",
+    "vitest": "^4.1.11"
+  },
+  "overrides": {
+    "fast-uri": "^3.1.8",
+    "hono": "^4.13.9",
+    "qs": "^6.16.0",
+    "vitest": "^4.1.11",
+    "@vitest/mocker": "^4.1.11"
   }
 }
