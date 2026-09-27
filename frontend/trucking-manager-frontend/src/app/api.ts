@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class Api {
-  private readonly base = 'http://localhost:8080/api';
+  private readonly base = '/api';
   private readonly http = inject(HttpClient);
 
   getStatus(): Observable<CompanyStatus> {

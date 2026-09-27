@@ -56,7 +56,8 @@
               "buildTarget": "trucking-manager-frontend:build:production"
             },
             "development": {
-              "buildTarget": "trucking-manager-frontend:build:development"
+              "buildTarget": "trucking-manager-frontend:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
