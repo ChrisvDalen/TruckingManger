@@ -39,12 +39,7 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: frontend/trucking-manager-frontend/package-lock.json
-      # `npm install` (not `npm ci`) so platform-specific optional native
-      # bindings (rolldown, esbuild, lightningcss, ...) are resolved for the
-      # runner's architecture. The lockfile was generated on a different arch,
-      # and `npm ci` would skip the x64 bindings (npm/cli#4828). Versions are
-      # still governed by package-lock.json.
-      - run: npm install
+      - run: npm ci
       # Fail the build if a dependency (including transitive) has a known
       # vulnerability. Keep this in lockstep with `npm audit` in CI.
       - run: npm audit --audit-level=low
